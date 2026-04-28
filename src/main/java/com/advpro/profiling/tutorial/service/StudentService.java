@@ -7,10 +7,8 @@ import com.advpro.profiling.tutorial.repository.StudentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 /**
  * @author muhammad.khadafi
@@ -29,15 +27,10 @@ public class StudentService {
     }
 
     public Optional<Student> findStudentWithHighestGpa() {
-        return studentRepository.findAll()
-                .stream()
-                .max(Comparator.comparingDouble(Student::getGpa));
+        return Optional.ofNullable(studentRepository.findTopByOrderByGpaDesc());
     }
 
     public String joinStudentNames() {
-        return studentRepository.findAll()
-                .stream()
-                .map(Student::getName)
-                .collect(Collectors.joining(", "));
+        return String.join(", ", studentRepository.findAllStudentNames());
     }
 }
